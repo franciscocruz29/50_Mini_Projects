@@ -2,26 +2,35 @@
 
 const sounds = ['applause', 'boo', 'gasp', 'tada', 'victory', 'wrong'];
 
-sounds.forEach(sound => {
+function createButton(sound) {
   const btn = document.createElement('button');
   btn.classList.add('btn');
-
   btn.innerText = sound;
-
   btn.addEventListener('click', () => {
-    stopSongs();
-
-    document.getElementById(sound).play();
+    playSound(sound);
   });
 
-  document.getElementById('buttons').appendChild(btn);
-});
-
-function stopSongs() {
-  sounds.forEach(sound => {
-    const song = document.getElementById(sound);
-
-    song.pause();
-    song.currentTime = 0; // resets its current time to 0
-  });
+  return btn;
 }
+
+function playSound(sound) {
+  stopAllSounds();
+  document.getElementById(sound).play();
+}
+
+function stopAllSounds() {
+  sounds.forEach(stopSound);
+}
+
+function stopSound(sound) {
+  const song = document.getElementById(sound);
+  song.pause();
+  song.currentTime = 0;  // resets its current time to 0
+}
+
+function addButtonsToContainer() {
+  const container = document.getElementById('buttons');
+  sounds.map(createButton).forEach(btn => container.appendChild(btn));
+}
+
+addButtonsToContainer();
