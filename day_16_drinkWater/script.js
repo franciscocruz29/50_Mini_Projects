@@ -49,23 +49,31 @@ function updateBigCup() {
   // Get the total number of cups
   const totalCups = smallCups.length;
 
-  // If there are no full cups, hide the percentage
+  // Update the percentage display
+  updatePercentage(fullCups, totalCups);
+
+  // Update the remained display
+  updateRemained(fullCups, totalCups);
+}
+
+// Function to update the percentage display
+function updatePercentage(fullCups, totalCups) {
   if (fullCups === 0) {
     percentage.style.visibility = 'hidden';
     percentage.style.height = 0;
   } else {
-    // Otherwise, show the percentage and set its height and text according to the proportion of full cups
     percentage.style.visibility = 'visible';
     percentage.style.height = `${fullCups / totalCups * 330}px`;
     percentage.innerText = `${fullCups / totalCups * 100}%`;
   }
+}
 
-  // If all cups are full, hide the remained
+// Function to update the remained display
+function updateRemained(fullCups, totalCups) {
   if (fullCups === totalCups) {
     remained.style.visibility = 'hidden';
     remained.style.height = 0;
   } else {
-    // Otherwise, show the remained and set its text according to the remaining liters
     remained.style.visibility = 'visible';
     liters.innerText = `${2 - (250 * fullCups / 1000)}L`;
   }
