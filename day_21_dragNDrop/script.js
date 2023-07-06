@@ -1,59 +1,63 @@
-// Select the element with class 'fill'
-const fill = document.querySelector('.fill');
+// Select the draggable element
+const draggableElement = document.querySelector('.fill');
 
-// Select all elements with class 'empty'
-const empties = document.querySelectorAll('.empty');
+// Select all target elements
+const targetElements = document.querySelectorAll('.empty');
 
-// Add event listeners for drag events on the 'fill' element
-fill.addEventListener('dragstart', dragStart);
-fill.addEventListener('dragend', dragEnd);
+// Add event listeners to the draggable element
+draggableElement.addEventListener('dragstart', handleDragStart);
+draggableElement.addEventListener('dragend', handleDragEnd);
 
-// Iterate over each 'empty' element and add event listeners for drag events
-for (const empty of empties) {
-  empty.addEventListener('dragover', dragOver);
-  empty.addEventListener('dragenter', dragEnter);
-  empty.addEventListener('dragleave', dragLeave);
-  empty.addEventListener('drop', dragDrop);
+// Add event listeners to each target element
+for (const targetElement of targetElements) {
+  targetElement.addEventListener('dragover', handleDragOver);
+  targetElement.addEventListener('dragenter', handleDragEnter);
+  targetElement.addEventListener('dragleave', handleDragLeave);
+  targetElement.addEventListener('drop', handleDrop);
 }
 
-// Event handler for dragstart event
-function dragStart() {
-  // Add the class 'hold' to the current element's className
-  this.className += ' hold';
-  // Set the className to 'invisible' after a small delay
-  setTimeout(() => this.className = 'invisible', 0);
+// Event handler for the dragstart event
+function handleDragStart() {
+  // Add the class 'hold' to the draggable element
+  this.classList.add('hold');
+
+  // Set a small timeout to allow the class change to take effect
+  setTimeout(() => this.classList.add('invisible'), 0);
 }
 
-// Event handler for dragend event
-function dragEnd() {
-  // Set the className of the current element to 'fill'
-  this.className = 'fill';
+// Event handler for the dragend event
+function handleDragEnd() {
+  // Reset the class of the draggable element to its default value
+  this.classList.remove('hold', 'invisible');
+  this.classList.add('fill');
 }
 
-// Event handler for dragover event
-function dragOver(e) {
+// Event handler for the dragover event
+function handleDragOver(event) {
   // Prevent the default behavior of the browser for the dragover event
-  e.preventDefault();
+  event.preventDefault();
 }
 
-// Event handler for dragenter event
-function dragEnter(e) {
+// Event handler for the dragenter event
+function handleDragEnter(event) {
   // Prevent the default behavior of the browser for the dragenter event
-  e.preventDefault();
-  // Add the class 'hovered' to the current element's className
-  this.className += ' hovered';
+  event.preventDefault();
+
+  // Add the class 'hovered' to the target element
+  this.classList.add('hovered');
 }
 
-// Event handler for dragleave event
-function dragLeave() {
-  // Set the className of the current element to 'empty'
-  this.className = 'empty';
+// Event handler for the dragleave event
+function handleDragLeave() {
+  // Remove the class 'hovered' from the target element
+  this.classList.remove('hovered');
 }
 
-// Event handler for drop event
-function dragDrop() {
-  // Set the className of the current element to 'empty'
-  this.className = 'empty';
-  // Append the 'fill' element to the current element
-  this.append(fill);
+// Event handler for the drop event
+function handleDrop() {
+  // Remove the class 'hovered' from the target element
+  this.classList.remove('hovered');
+
+  // Append the draggable element to the target element
+  this.appendChild(draggableElement);
 }
