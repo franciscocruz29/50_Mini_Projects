@@ -1,45 +1,54 @@
-// Get the DOM elements by their IDs
-const header = document.getElementById('header');
-const title = document.getElementById('title');
-const excerpt = document.getElementById('excerpt');
-const profile_img = document.getElementById('profile_img');
-const name = document.getElementById('name');
-const date = document.getElementById('date');
+// Create a class to handle the data and rendering
+class DataRenderer {
+  constructor() {
+    // Get the DOM elements by their IDs
+    this.header = document.getElementById('header');
+    this.title = document.getElementById('title');
+    this.excerpt = document.getElementById('excerpt');
+    this.profile_img = document.getElementById('profile_img');
+    this.name = document.getElementById('name');
+    this.date = document.getElementById('date');
 
-// Get the DOM elements with the class 'animated-bg' and 'animated-bg-text'
-const animated_bgs = document.querySelectorAll('.animated-bg');
-const animated_bg_texts = document.querySelectorAll('.animated-bg-text');
+    // Get the DOM elements with the class 'animated-bg' and 'animated-bg-text'
+    this.animated_bgs = document.querySelectorAll('.animated-bg');
+    this.animated_bg_texts = document.querySelectorAll('.animated-bg-text');
 
-// Wait for 2500 milliseconds (2.5 seconds) before calling the getData function
-setTimeout(getData, 2500);
+    // Initialize the data
+    this.data = {
+      header: '<img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80" alt="" />',
+      title: 'Lorem ipsum dolor sit amet',
+      excerpt: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore perferendis',
+      profile_img: '<img src="https://randomuser.me/api/portraits/men/45.jpg" alt="" />',
+      name: 'John Doe',
+      date: 'Oct 08, 2020'
+    };
+  }
 
-// Function to populate the DOM elements with data
-function getData() {
-  // Update the header element with an image source
-  header.innerHTML =
-    '<img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80" alt="" />';
+  // Render the data
+  renderData() {
+    // Update the DOM elements with the data
+    this.header.innerHTML = this.data.header;
+    this.title.innerHTML = this.data.title;
+    this.excerpt.innerHTML = this.data.excerpt;
+    this.profile_img.innerHTML = this.data.profile_img;
+    this.name.innerHTML = this.data.name;
+    this.date.innerHTML = this.data.date;
 
-  // Update the title element with some text
-  title.innerHTML = 'Lorem ipsum dolor sit amet';
+    // Remove the 'animated-bg' class from each element in animated_bgs NodeList
+    this.animated_bgs.forEach((bg) => bg.classList.remove('animated-bg'));
 
-  // Update the excerpt element with some text
-  excerpt.innerHTML =
-    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore perferendis';
+    // Remove the 'animated-bg-text' class from each element in animated_bg_texts NodeList
+    this.animated_bg_texts.forEach((bg) => bg.classList.remove('animated-bg-text'));
+  }
 
-  // Update the profile_img element with an image source
-  profile_img.innerHTML =
-    '<img src="https://randomuser.me/api/portraits/men/45.jpg" alt="" />';
-
-  // Update the name element with some text
-  name.innerHTML = 'John Doe';
-
-  // Update the date element with some text
-  date.innerHTML = 'Oct 08, 2020';
-
-  // Remove the 'animated-bg' class from each element in animated_bgs NodeList
-  animated_bgs.forEach((bg) => bg.classList.remove('animated-bg'));
-
-  // Remove the 'animated-bg-text' class from each element in animated_bg_texts NodeList
-  animated_bg_texts.forEach((bg) => bg.classList.remove('animated-bg-text'));
+  // Initialize the rendering process
+  init() {
+    setTimeout(() => {
+      this.renderData();
+    }, 2500);
+  }
 }
 
+// Create an instance of the DataRenderer class and initialize it
+const dataRenderer = new DataRenderer();
+dataRenderer.init();
