@@ -1,72 +1,60 @@
 /* This code controls an image carousel with left and right buttons that allow you to navigate through a series of images displayed horizontally. 
 The interval between image changes is set to 2 seconds, and you can also manually navigate through the images using the buttons.  */
 
-// Select the image container element
-const imgs = document.getElementById('imgs');
-
-// Select the left arrow button
+// Get DOM elements and store them in variables
+const imgsContainer = document.getElementById('imgs');
 const leftBtn = document.getElementById('left');
-
-// Select the right arrow button  
 const rightBtn = document.getElementById('right');
+const images = document.querySelectorAll('#imgs img');
 
-// Get all the images inside the image container as an array
-const img = document.querySelectorAll('#imgs img');
+// Initialize variables for image index and interval
+let currentIndex = 0;
+let intervalId = setInterval(nextImage, 2000);
 
-// Initialize a variable 'idx' to keep track of the current image index, starting at 0
-let idx = 0;
-
-// Set up an interval that calls the 'run' function every 2000 milliseconds (2 seconds) and store it in the 'interval' variable
-let interval = setInterval(run, 2000);
-
-// Define a function called 'run' which will be executed by the interval
-function run() {
-  // Increment the 'idx' variable by 1
-  idx++;
-  // Call the 'changeImage' function
-  changeImage();
-}
-
-// Define a function called 'changeImage' to update the displayed image
-function changeImage() {
-  // Check if 'idx' is greater than the number of images minus one
-  if (idx > img.length - 1) {
-    // Reset 'idx' to 0 if it exceeds the last index
-    idx = 0;
-  } else if (idx < 0) {
-    // Set 'idx' to the last index if it becomes negative
-    idx = img.length - 1;
+// Function to display the current image
+function displayImage() {
+  // Ensure currentIndex is within bounds
+  if (currentIndex < 0) {
+    currentIndex = images.length - 1;
+  } else if (currentIndex >= images.length) {
+    currentIndex = 0;
   }
 
-  // Update the 'transform' style of the 'imgs' element to move the images horizontally
-  // The template literal `${-idx * 500}px` calculates the horizontal translation based on the current 'idx' and 500 pixels per image
-  imgs.style.transform = `translateX(${-idx * 500}px)`;
+  // Calculate the translation based on currentIndex
+  const translateX = -currentIndex * 500;
+
+  // Apply the transform style to move the images
+  imgsContainer.style.transform = `translateX(${translateX}px)`;
 }
 
-// Define a function called 'resetInterval' to reset the interval timer
+// Function to show the next image
+function nextImage() {
+  currentIndex++;
+  displayImage();
+}
+
+// Function to show the previous image
+function previousImage() {
+  currentIndex--;
+  displayImage();
+}
+
+// Function to reset the interval timer
 function resetInterval() {
-  // Clear the existing interval
-  clearInterval(interval);
-  // Set a new interval that calls the 'run' function every 2000 milliseconds
-  interval = setInterval(run, 2000);
+  clearInterval(intervalId);
+  intervalId = setInterval(nextImage, 2000);
 }
 
-// Add a click event listener to the 'rightBtn' element
+// Event listeners for left and right buttons
 rightBtn.addEventListener('click', () => {
-  // Increment 'idx' to move to the next image
-  idx++;
-  // Call 'changeImage' to update the displayed image
-  changeImage();
-  // Reset the interval timer
+  nextImage();
   resetInterval();
 });
 
-// Add a click event listener to the 'leftBtn' element
 leftBtn.addEventListener('click', () => {
-  // Decrement 'idx' to move to the previous image
-  idx--;
-  // Call 'changeImage' to update the displayed image
-  changeImage();
-  // Reset the interval timer
+  previousImage();
   resetInterval();
 });
+
+// Initial display of the first image
+displayImage();
